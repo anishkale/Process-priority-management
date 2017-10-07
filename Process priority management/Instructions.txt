@@ -1,0 +1,1 @@
+Copy the prun.sh file in /bin folder and run the prun command through terminal

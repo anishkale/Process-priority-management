@@ -1,0 +1,55 @@
+#! /bin/sh
+
+while [ "$sel" != "6" ]
+do
+echo "Enter an option. ";
+echo "1.Open two processes";
+echo "2.start log file";
+echo "3.View process attributes";
+echo "4.Perform renice operations ";
+echo "5.kill initiated process";
+echo "6.exit";
+read sel
+case $sel in
+1)read -p "Enter a process to be started : " p1
+read -p "Enter a nice value: " n1
+read -p "Enter a second process to be started : " p2
+read -p "Enter a nice value: " n2
+nice -$n1 $p1  & nice -$n2 $p2;;
+
+2)
+read -p "Enter a name for log file : " n1
+script $n1.log;;
+
+3)top -b -n 1 | grep firefox
+top -b -n 1 | grep chrome
+PID=`pgrep firefox`
+PID1=`pgrep chrome`
+echo "Firefox running time";
+ps h -O etimes $PID
+echo "Chrome running time";
+ps h -O etimes $PID1  ;;
+
+4)
+PID=`pgrep firefox` 
+echo "process id of firefox is $PID";
+read -p "Enter renice value : " ren
+sudo renice $ren $PID
+PID=`pgrep chrome` 
+echo "process id of chrome is $PID";
+read -p "Enter renice value for chrome : " ren1
+sudo renice $ren1 $PID;;
+
+5)
+PID=`pgrep firefox` 
+echo "$PID";
+kill $PID
+PID1=`pgrep chrome` 
+echo "$PID1";
+kill $PID1;;
+
+esac
+done
+
+
+
